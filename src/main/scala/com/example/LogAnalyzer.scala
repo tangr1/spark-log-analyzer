@@ -14,7 +14,6 @@ object LogAnalyzer {
 
     val accessLogs = sc.textFile(logFile).map(ApacheAccessLog.parseLogLine)
 
-    /*
     val ipCount = accessLogs.map(log => (log.ipAddress, 1)).reduceByKey(_ + _)
     println("IP Address Count: %s".format(ipCount.count()))
 
@@ -28,14 +27,14 @@ object LogAnalyzer {
 
     val userCount = accessLogs.map(log => (log.userId, 1)).reduceByKey(_ + _)
     println("User Count: %s".format(userCount.count()))
-    */
 
     val users = accessLogs
       .map(log => (log.userId, DateTime.parse(log.dateTime, DateTimeFormat.forPattern("dd/MMM/yyyy:HH:mm:ss Z")).getMillis / 1000))
       .groupByKey()
-      //.filter(_._2.size > 1)
-    users.saveAsTextFile("/tmp/text", classOf[GzipCodec])
-    //println(s"""User > 2 times: ${users.mkString("[", ",", "]")}""")
+      .filter(_._2.size > 1)
+      .take(100)
+    //users.saveAsTextFile("/tmp/text", classOf[GzipCodec])
+    println(s"""User > 2 times: ${users.mkString("[", ",", "]")}""")
 
     sc.stop()
   }
