@@ -1,13 +1,22 @@
-name := "Spark Logs Analyzer"
+name := "dd"
 
-version := "1.0"
+version := "0.0.1"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.10.6"
+
+scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation")
 
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.0" % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "1.4.0" % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-streaming" % "1.4.0" % "provided"
 libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.8.0"
+libraryDependencies += "com.maxmind.geoip2" % "geoip2" % "2.6.0"
 
 resolvers += "Akka Repository" at "http://repo.akka.io/releases/"
 
+assemblyMergeStrategy in assembly := {
+    case PathList("META-INF", xs@_*) => MergeStrategy.discard
+    case x => MergeStrategy.first
+}
+
+assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)

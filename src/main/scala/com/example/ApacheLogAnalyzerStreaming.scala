@@ -4,7 +4,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming._
 import org.apache.spark.{SparkConf, SparkContext}
 
-object LogAnalyzerStreaming {
+object ApacheLogAnalyzerStreaming {
   val WINDOW_LENGTH = new Duration(30 * 1000)
   val SLIDE_INTERVAL = new Duration(10 * 1000)
 

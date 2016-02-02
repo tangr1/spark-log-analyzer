@@ -5,7 +5,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
-object LogAnalyzer {
+object ApacheLogAnalyzer {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("Log Analyzer in Scala")
     val sc = new SparkContext(sparkConf)
