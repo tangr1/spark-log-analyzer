@@ -12,13 +12,15 @@ object DailyActiveUser {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)
-    val database = new File("src/main/resources/geoip.mmdb")
     val logFile = args(0)
     val sqlContext = new SQLContext(sc)
     val logs = sqlContext.read.json(logFile)
+    val usCode = 6252001
     logs.registerTempTable("dau")
+
     object Reader extends Serializable {
-      lazy val reader: DatabaseReader = new Builder(database).build()
+      val database = getClass.getResourceAsStream("/geoip.mmdb")
+      val reader: DatabaseReader = new Builder(database).build()
     }
 
     val userCount = sqlContext
@@ -34,22 +36,16 @@ object DailyActiveUser {
       .first()
     println(newUserCount)
     */
-    val usIps = sqlContext
+    val ips = sqlContext
       .sql("SELECT requestUser, requestIp FROM dau WHERE requestPath = '/rest/v2/users/active' " +
         "and responseCode = '200' AND requestUser IS NOT NULL AND requestIp IS NOT NULL")
-      .map(row => (row.getString(0), Reader.reader.country(InetAddress.getByName(row.getString(1).stripSuffix(" "))).getCountry.getName))
+      .map(row => (row.getString(0), Reader.reader.country(InetAddress.getByName(row.getString(1).stripSuffix(" ")))
+        .getCountry.getGeoNameId))
       .reduceByKey((x, y) => x)
-      .filter(_._2 == "United States")
-      .count()
-    println(usIps)
-    val notUsIps = sqlContext
-      .sql("SELECT requestUser, requestIp FROM dau WHERE requestPath = '/rest/v2/users/active' " +
-        "and responseCode = '200' AND requestUser IS NOT NULL AND requestIp IS NOT NULL")
-      .map(row => (row.getString(0), Reader.reader.country(InetAddress.getByName(row.getString(1).stripSuffix(" "))).getCountry.getName))
-      .reduceByKey((x, y) => x)
-      .filter(_._2 != "United States")
-      .count()
-    println(notUsIps)
+      .values.cache()
+    println(ips.count())
+    println(ips.filter(_ == usCode).count())
+    println(ips.filter(_ != usCode).count())
 
     sc.stop()
   }
