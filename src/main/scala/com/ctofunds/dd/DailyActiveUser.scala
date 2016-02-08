@@ -13,12 +13,11 @@ object DailyActiveUser {
 
     val context = rrd
       .map(Line.parseLine)
-      .cache()
     println("活跃用户数: " + context.count())
     println("美国活跃用户数: " + context.filter(_.country == usCode).count())
     println("非美国活跃用户数: " + context.filter(_.country != usCode).count())
     println("iOS活跃用户数: " + context.filter(_.ios != -1).count())
-    println("Android活跃用户数: " + context.filter(_.android != usCode).count())
+    println("Android活跃用户数: " + context.filter(_.android != -1).count())
 
     /*
     val sqlContext = new SQLContext(sc)

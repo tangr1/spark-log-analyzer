@@ -9,6 +9,7 @@ object DailyNewUser {
     val sparkConf = new SparkConf().setAppName("musically-dnu")
     val sc = new SparkContext(sparkConf)
     val logFile = args(0)
+    val outFile = args(1)
     val sqlContext = new SQLContext(sc)
     val logs = sqlContext.read.json(logFile)
     logs.registerTempTable("dnu")
@@ -18,7 +19,7 @@ object DailyNewUser {
       .map(row => (row.getString(0), 1))
       .reduceByKey(_ + _)
       .keys
-      .saveAsTextFile("/tmp/dnu", classOf[GzipCodec])
+      .saveAsTextFile(outFile, classOf[GzipCodec])
 
     sc.stop()
   }
