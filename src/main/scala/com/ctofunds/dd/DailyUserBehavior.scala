@@ -7,7 +7,7 @@ object DailyUserBehavior {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)
-    sc.hadoopConfiguration.set("mapreduce.input.fileinputformat.input.dir.recursive", "true")
+    HadoopConfiguration.configure(sc.hadoopConfiguration)
     val logFile = args(0)
     val sqlContext = new SQLContext(sc)
     val logs = sqlContext.read.json(logFile)

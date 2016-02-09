@@ -8,6 +8,7 @@ object DailyNewUser {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dnu")
     val sc = new SparkContext(sparkConf)
+    HadoopConfiguration.configure(sc.hadoopConfiguration)
     val logFile = args(0)
     val outFile = args(1)
     val sqlContext = new SQLContext(sc)

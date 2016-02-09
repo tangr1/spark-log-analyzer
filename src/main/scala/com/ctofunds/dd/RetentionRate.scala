@@ -6,6 +6,7 @@ object RetentionRate {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-rr")
     val sc = new SparkContext(sparkConf)
+    HadoopConfiguration.configure(sc.hadoopConfiguration)
     val newUserFile = args(0)
     val activeUserFile = args(1)
 
