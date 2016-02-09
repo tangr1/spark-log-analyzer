@@ -30,7 +30,8 @@ object DailyUserBehavior {
       .reduceByKey(_ + _)
       .map(x => (x._2, 1))
       .reduceByKey(_ + _)
-      .map(x => (x._1, (x._2 * 100.0 / userCount).toFloat))
+      .map(x => (x._1, (x._2 * 100.0 / userCount).formatted("%.2f%%")))
+      .sortByKey()
       .collect
 
     println(result.mkString("\n"))

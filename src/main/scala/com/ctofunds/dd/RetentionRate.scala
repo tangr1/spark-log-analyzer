@@ -11,13 +11,13 @@ object RetentionRate {
 
     val newUsers = sc.textFile(newUserFile)
       .map(line => (line, 1))
-    println("新用户数: " + newUsers.count)
+    println("新用户数:\t%s".format(newUsers.count))
     val retentionUsers= sc.textFile(activeUserFile)
       .map(Line.parseLine)
       .map(line => (line.user, 1))
       .join(newUsers)
-    println("留存用户数: " + retentionUsers.count)
-    println("留存率: " + retentionUsers.count * 100.0 / newUsers.count)
+    println("留存用户数:\t%s".format(retentionUsers.count))
+    println("留存率:\t\t%.2f%%".format(retentionUsers.count * 100.0 / newUsers.count))
 
     sc.stop()
   }
