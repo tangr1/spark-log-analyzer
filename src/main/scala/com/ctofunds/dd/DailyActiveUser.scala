@@ -7,6 +7,14 @@ object DailyActiveUser {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)
     sc.hadoopConfiguration.set("mapreduce.input.fileinputformat.input.dir.recursive", "true")
+    sc.hadoopConfiguration.set("mapred.input.dir.recursive", "true")
+    sc.hadoopConfiguration.set("hive.mapred.supports.subdirectories", "true")
+    /*
+    sc.hadoopConfiguration.set("fs.s3n.awsAccessKeyId", "")
+    sc.hadoopConfiguration.set("fs.s3.awsAccessKeyId", "")
+    sc.hadoopConfiguration.set("fs.s3n.awsSecretAccessKey", "")
+    sc.hadoopConfiguration.set("fs.s3.awsSecretAccessKey", "")
+    */
     val logFile = args(0)
     val usCode = 6252001
     val rrd = sc.textFile(logFile)
