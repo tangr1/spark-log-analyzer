@@ -1,10 +1,10 @@
 package com.ctofunds.dd
 
-import org.apache.hadoop.io.compress.GzipCodec
+import org.apache.hadoop.io.compress.{BZip2Codec, GzipCodec}
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 
-object DailyNewUser {
+object NewUser {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dnu")
     val sc = new SparkContext(sparkConf)
@@ -20,7 +20,7 @@ object DailyNewUser {
       .map(row => (row.getString(0), 1))
       .reduceByKey(_ + _)
       .keys
-      .saveAsTextFile(outFile, classOf[GzipCodec])
+      .saveAsTextFile(outFile, classOf[BZip2Codec])
 
     sc.stop()
   }

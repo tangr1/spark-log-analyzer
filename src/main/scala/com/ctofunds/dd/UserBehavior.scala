@@ -3,7 +3,7 @@ package com.ctofunds.dd
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 
-object DailyUserBehavior {
+object UserBehavior {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)
@@ -14,7 +14,7 @@ object DailyUserBehavior {
     logs.registerTempTable("dub")
 
     val activeUsers = sqlContext
-      .sql("SELECT requestUser, requestPath FROM dub WHERE requestPath = '/rest/v2/users/active' " +
+      .sql("SELECT requestUser FROM dub WHERE requestPath = '/rest/v2/users/active' " +
         "and responseCode = '200' and requestUser IS NOT NULL")
       .map(row => (row.getString(0), 1))
       .distinct()
@@ -23,7 +23,7 @@ object DailyUserBehavior {
     println(userCount)
 
     val cachedResult = sqlContext
-      .sql("SELECT requestUser, requestPath FROM dub WHERE responseCode = '200' and requestUser IS NOT NULL")
+      .sql("SELECT requestUser FROM dub WHERE responseCode = '200' and requestUser IS NOT NULL")
       .map(row => (row.getString(0), 1))
       .join(activeUsers)
       .mapValues(_ => 1L)

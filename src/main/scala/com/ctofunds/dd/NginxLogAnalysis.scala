@@ -8,7 +8,7 @@ import org.apache.hadoop.io.compress.BZip2Codec
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 
-object SaveToLocal {
+object NginxLogAnalysis {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)

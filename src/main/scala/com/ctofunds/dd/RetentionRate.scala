@@ -8,17 +8,24 @@ object RetentionRate {
     val sc = new SparkContext(sparkConf)
     HadoopConfiguration.configure(args, sc.hadoopConfiguration)
     val newUserFile = args(2)
-    val activeUserFile = args(3)
 
     val newUsers = sc.textFile(newUserFile)
       .map(line => (line, 1))
-    println("新用户数:\t%s".format(newUsers.count))
-    val retentionUsers= sc.textFile(activeUserFile)
-      .map(Line.parseLine)
-      .map(line => (line.user, 1))
-      .join(newUsers)
-    println("留存用户数:\t%s".format(retentionUsers.count))
-    println("留存率:\t\t%.2f%%".format(retentionUsers.count * 100.0 / newUsers.count))
+      .cache
+    println("New user:\t%s".format(newUsers.count))
+    for (i <- 3 until args.length) {
+      val retentionUsers = sc.textFile(args(i))
+        .map(Line.parseLine)
+        .map(line => (line.user, 1))
+        .join(newUsers)
+      print(" | %.2f%%".format(retentionUsers.count * 100.0 / newUsers.count))
+      /*
+      println("%s retention".format(args(i)))
+      println("Retention user:\t%s".format(retentionUsers.count))
+      println("Retention rate:\t%.2f%%".format(retentionUsers.count * 100.0 / newUsers.count))
+      */
+    }
+    print(" |\n")
 
     sc.stop()
   }
