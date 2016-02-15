@@ -8,9 +8,9 @@ object DailyNewUser {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dnu")
     val sc = new SparkContext(sparkConf)
-    HadoopConfiguration.configure(sc.hadoopConfiguration)
-    val logFile = args(0)
-    val outFile = args(1)
+    HadoopConfiguration.configure(args, sc.hadoopConfiguration)
+    val logFile = args(2)
+    val outFile = args(3)
     val sqlContext = new SQLContext(sc)
     val logs = sqlContext.read.json(logFile)
     logs.registerTempTable("dnu")

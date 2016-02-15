@@ -7,8 +7,8 @@ object DailyUserBehavior {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)
-    HadoopConfiguration.configure(sc.hadoopConfiguration)
-    val logFile = args(0)
+    HadoopConfiguration.configure(args, sc.hadoopConfiguration)
+    val logFile = args(2)
     val sqlContext = new SQLContext(sc)
     val logs = sqlContext.read.json(logFile)
     logs.registerTempTable("dub")
@@ -16,20 +16,23 @@ object DailyUserBehavior {
     val activeUsers = sqlContext
       .sql("SELECT requestUser, requestPath FROM dub WHERE requestPath = '/rest/v2/users/active' " +
         "and responseCode = '200' and requestUser IS NOT NULL")
-      .map(row => (row.getString(0), row.getString(1)))
-      .reduceByKey((x, y) => x)
+      .map(row => (row.getString(0), 1))
+      .distinct()
 
     val userCount = activeUsers.count()
     println(userCount)
 
-    val result = sqlContext
+    val cachedResult = sqlContext
       .sql("SELECT requestUser, requestPath FROM dub WHERE responseCode = '200' and requestUser IS NOT NULL")
-      .map(row => (row.getString(0), row.getString(1)))
+      .map(row => (row.getString(0), 1))
       .join(activeUsers)
-      .map(x => (x._1, 1))
+      .mapValues(_ => 1L)
       .reduceByKey(_ + _)
       .map(x => (x._2, 1))
       .reduceByKey(_ + _)
+      .cache()
+
+    val result = cachedResult
       .map(x => (x._1, (x._2 * 100.0 / userCount).formatted("%.2f%%")))
       .sortByKey()
       .collect

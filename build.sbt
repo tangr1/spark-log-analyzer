@@ -1,6 +1,6 @@
 name := "dd"
 
-version := "0.0.1"
+version := "0.0.6"
 
 scalaVersion := "2.10.6"
 
@@ -11,7 +11,6 @@ libraryDependencies += "org.apache.spark" %% "spark-sql" % "1.4.0" % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-streaming" % "1.4.0" % "provided"
 libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.8.0"
 libraryDependencies += "com.maxmind.geoip2" % "geoip2" % "2.6.0"
-dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.0"
 
 resolvers += "Akka Repository" at "http://repo.akka.io/releases/"
 
