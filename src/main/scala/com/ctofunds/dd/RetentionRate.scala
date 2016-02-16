@@ -12,7 +12,7 @@ object RetentionRate {
     val newUsers = sc.textFile(newUserFile)
       .map(line => (line, 1))
       .cache
-    println("New user:\t%s".format(newUsers.count))
+    print(newUsers.count)
     for (i <- 3 until args.length) {
       val retentionUsers = sc.textFile(args(i))
         .map(Line.parseLine)

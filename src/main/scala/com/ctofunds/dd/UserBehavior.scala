@@ -10,15 +10,12 @@ object UserBehavior {
     val activeUserFile = args(2)
     val requestPathFile = args(3)
 
-    val activeUsers = sc.textFile(activeUserFile)
+    val userCount = sc.textFile(activeUserFile)
       .map(Line.parseLine)
       .map(line => (line._1, 1))
-      .cache
-    val userCount = activeUsers.count
-    println(userCount)
+      .count
     val rawResult = sc.textFile(requestPathFile)
       .map(line => (line.split(",")(0), 1))
-      .join(activeUsers)
       .mapValues(_ => 1L)
       .reduceByKey(_ + _)
       .cache
@@ -35,6 +32,7 @@ object UserBehavior {
       .map(x => (x._1, "%s %.2f%%".format(x._2, x._2 * 100.0 / userCount)))
       .collect
     println(result.mkString("\n"))
+    print(userCount)
     print(" | %.2f%%".format(distribution.filter(x => x._1 == 1).values.sum * 100.0 / userCount))
     print(" | %.2f%%".format(distribution.filter(x => x._1 == 2).values.sum * 100.0 / userCount))
     print(" | %.2f%%".format(distribution.filter(x => x._1 == 3).values.sum * 100.0 / userCount))

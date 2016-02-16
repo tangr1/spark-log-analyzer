@@ -26,22 +26,22 @@ object ActiveUser {
       val iosCount = context.filter(_._2.ios != -1).count
       val androidCount = context.filter(_._2.android != -1).count
       println("=== %s Active User ===".format(logFile))
+      println("iOS user:\t\t%s (%.2f%%)".format(iosCount, iosCount * 100.0 / count))
+      println("Android user:\t\t%s (%.2f%%)".format(androidCount, androidCount * 100.0 / count))
+      println("US user:\t\t%s (%.2f%%)".format(usCount, usCount * 100.0 / count))
+      println("Non US user:\t\t%s (%.2f%%)".format(nonUsCount, nonUsCount * 100.0 / count))
+      println("Active user:\t\t" + count)
       println("US iOS user:\t\t%s (%.2f%%)".format(usIosCount, usIosCount * 100.0 / count))
       println("Non US iOS user:\t%s (%.2f%%)".format(nonUsIosCount, nonUsIosCount * 100.0 / count))
       println("US Android user:\t%s (%.2f%%)".format(usAndroidCount, usAndroidCount * 100.0 / count))
       println("Non US Android user:\t%s (%.2f%%)".format(nonUsAndroidCount, nonUsAndroidCount * 100.0 / count))
-      println("US user:\t\t%s (%.2f%%)".format(usCount, usCount * 100.0 / count))
-      println("Non US user:\t\t%s (%.2f%%)".format(nonUsCount, nonUsCount * 100.0 / count))
-      println("iOS user:\t\t%s (%.2f%%)".format(iosCount, iosCount * 100.0 / count))
-      println("Android user:\t\t%s (%.2f%%)".format(androidCount, androidCount * 100.0 / count))
-      println("Active user:\t\t" + count)
-      println(" | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s |"
+      println(" %s | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) | %s (%.2f%%) |"
         .format(
-          usIosCount, usIosCount * 100.0 / count, nonUsIosCount, nonUsIosCount * 100.0 / count,
-          usAndroidCount, usAndroidCount * 100.0 / count, nonUsAndroidCount, nonUsAndroidCount * 100.0 / count,
-          usCount, usCount * 100.0 / count, nonUsCount, nonUsCount * 100.0 / count,
+          count,
           iosCount, iosCount * 100.0 / count, androidCount, androidCount * 100.0 / count,
-          count
+          usCount, usCount * 100.0 / count, nonUsCount, nonUsCount * 100.0 / count,
+          usIosCount, usIosCount * 100.0 / count, nonUsIosCount, nonUsIosCount * 100.0 / count,
+          usAndroidCount, usAndroidCount * 100.0 / count, nonUsAndroidCount, nonUsAndroidCount * 100.0 / count
         ))
     }
 
