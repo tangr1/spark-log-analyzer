@@ -8,7 +8,7 @@ import org.apache.hadoop.io.compress.BZip2Codec
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 
-object NginxLogAnalysis {
+object RawActiveUser {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)
@@ -33,8 +33,8 @@ object NginxLogAnalysis {
     }
 
     sqlContext
-      .sql("SELECT requestUser, requestIp, userAgent FROM dau WHERE requestPath = '/rest/v2/users/active' " +
-        "and responseCode = '200' and requestUser IS NOT NULL")
+      .sql("SELECT requestUser, requestIp, userAgent FROM dau WHERE requestPath IS NOT NULL " +
+        "AND responseCode = '200' AND requestUser IS NOT NULL AND requestUser NOT IN('-1','-2','-3')")
       .map(row => (row.getString(0), Array(Reader.parse(row.getString(1).stripSuffix(" ")),
         row.getString(2).indexOf("iOS"), row.getString(2).indexOf("Android")).mkString(":")))
       .reduceByKey((x, y) => x)

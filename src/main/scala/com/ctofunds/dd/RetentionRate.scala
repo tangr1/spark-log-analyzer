@@ -16,7 +16,7 @@ object RetentionRate {
     for (i <- 3 until args.length) {
       val retentionUsers = sc.textFile(args(i))
         .map(Line.parseLine)
-        .map(line => (line.user, 1))
+        .map(line => (line._1, 1))
         .join(newUsers)
       print(" | %.2f%%".format(retentionUsers.count * 100.0 / newUsers.count))
       /*

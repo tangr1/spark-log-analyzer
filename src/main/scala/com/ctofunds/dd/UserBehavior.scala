@@ -1,6 +1,5 @@
 package com.ctofunds.dd
 
-import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 
 object UserBehavior {
@@ -8,36 +7,44 @@ object UserBehavior {
     val sparkConf = new SparkConf().setAppName("musically-dau")
     val sc = new SparkContext(sparkConf)
     HadoopConfiguration.configure(args, sc.hadoopConfiguration)
-    val logFile = args(2)
-    val sqlContext = new SQLContext(sc)
-    val logs = sqlContext.read.json(logFile)
-    logs.registerTempTable("dub")
+    val activeUserFile = args(2)
+    val requestPathFile = args(3)
 
-    val activeUsers = sqlContext
-      .sql("SELECT requestUser FROM dub WHERE requestPath = '/rest/v2/users/active' " +
-        "and responseCode = '200' and requestUser IS NOT NULL")
-      .map(row => (row.getString(0), 1))
-      .distinct()
-
-    val userCount = activeUsers.count()
+    val activeUsers = sc.textFile(activeUserFile)
+      .map(Line.parseLine)
+      .map(line => (line._1, 1))
+      .cache
+    val userCount = activeUsers.count
     println(userCount)
-
-    val cachedResult = sqlContext
-      .sql("SELECT requestUser FROM dub WHERE responseCode = '200' and requestUser IS NOT NULL")
-      .map(row => (row.getString(0), 1))
+    val rawResult = sc.textFile(requestPathFile)
+      .map(line => (line.split(",")(0), 1))
       .join(activeUsers)
       .mapValues(_ => 1L)
       .reduceByKey(_ + _)
+      .cache
+    val topUsers = rawResult
+      .sortBy(_._2, ascending = false)
+      .take(10)
+    println(topUsers.mkString("\n"))
+    val distribution = rawResult
       .map(x => (x._2, 1))
       .reduceByKey(_ + _)
-      .cache()
-
-    val result = cachedResult
-      .map(x => (x._1, (x._2 * 100.0 / userCount).formatted("%.2f%%")))
+      .cache
+    val result = distribution
       .sortByKey()
+      .map(x => (x._1, "%s %.2f%%".format(x._2, x._2 * 100.0 / userCount)))
       .collect
-
     println(result.mkString("\n"))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 == 1).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 == 2).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 == 3).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 == 4).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 == 5).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 > 5 && x._1 < 11).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 > 10 && x._1 < 101).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 > 100 && x._1 < 1001).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 > 1000 && x._1 < 10001).values.sum * 100.0 / userCount))
+    print(" | %.2f%%".format(distribution.filter(x => x._1 > 10000).values.sum * 100.0 / userCount))
 
     sc.stop()
   }

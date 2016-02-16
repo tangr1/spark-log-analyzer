@@ -15,7 +15,7 @@ object EventAnalysis {
         .reduceByKey(_ + _)
         .sortByKey()
         .collect
-      println(s"=== ${logFile} Event Analysis ===")
+      println(s"=== $logFile Event Analysis ===")
       println(result.mkString("\n"))
       result.foreach(item => print(" | %s".format(item._2)))
       println(" |")

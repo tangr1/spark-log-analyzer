@@ -14,16 +14,17 @@ object ActiveUser {
       val rrd = sc.textFile(logFile)
       val context = rrd
         .map(Line.parseLine)
+        .reduceByKey((x, y) => x)
         .cache
       val count = context.count
-      val usIosCount = context.filter(x => x.country == usCode && x.ios != -1).count
-      val usAndroidCount = context.filter(x => x.country == usCode && x.android != -1).count
-      val usCount = context.filter(_.country == usCode).count
-      val nonUsIosCount = context.filter(x => x.country != usCode && x.ios != -1).count
-      val nonUsAndroidCount = context.filter(x => x.country != usCode && x.android != -1).count
-      val nonUsCount = context.filter(_.country != usCode).count
-      val iosCount = context.filter(_.ios != -1).count
-      val androidCount = context.filter(_.android != -1).count
+      val usIosCount = context.filter(x => x._2.country == usCode && x._2.ios != -1).count
+      val usAndroidCount = context.filter(x => x._2.country == usCode && x._2.android != -1).count
+      val usCount = context.filter(_._2.country == usCode).count
+      val nonUsIosCount = context.filter(x => x._2.country != usCode && x._2.ios != -1).count
+      val nonUsAndroidCount = context.filter(x => x._2.country != usCode && x._2.android != -1).count
+      val nonUsCount = context.filter(_._2.country != usCode).count
+      val iosCount = context.filter(_._2.ios != -1).count
+      val androidCount = context.filter(_._2.android != -1).count
       println("=== %s Active User ===".format(logFile))
       println("US iOS user:\t\t%s (%.2f%%)".format(usIosCount, usIosCount * 100.0 / count))
       println("Non US iOS user:\t%s (%.2f%%)".format(nonUsIosCount, nonUsIosCount * 100.0 / count))
