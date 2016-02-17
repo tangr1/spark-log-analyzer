@@ -43,6 +43,7 @@ object UserBehavior {
     print(" | %.2f%%".format(distribution.filter(x => x._1 > 100 && x._1 < 1001).values.sum * 100.0 / userCount))
     print(" | %.2f%%".format(distribution.filter(x => x._1 > 1000 && x._1 < 10001).values.sum * 100.0 / userCount))
     print(" | %.2f%%".format(distribution.filter(x => x._1 > 10000).values.sum * 100.0 / userCount))
+    print(" |")
 
     sc.stop()
   }
