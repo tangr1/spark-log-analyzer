@@ -27,11 +27,13 @@ object UserBehavior {
       .map(x => (x._2, 1))
       .reduceByKey(_ + _)
       .cache
+    /*
     val result = distribution
       .sortByKey()
       .map(x => (x._1, "%s %.2f%%".format(x._2, x._2 * 100.0 / userCount)))
       .collect
     println(result.mkString("\n"))
+    */
     print(userCount)
     print(" | %.2f%%".format(distribution.filter(x => x._1 == 1).values.sum * 100.0 / userCount))
     print(" | %.2f%%".format(distribution.filter(x => x._1 == 2).values.sum * 100.0 / userCount))

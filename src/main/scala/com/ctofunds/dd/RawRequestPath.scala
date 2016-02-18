@@ -16,9 +16,9 @@ object RawRequestPath {
     logs.registerTempTable("drp")
 
     sqlContext
-      .sql("SELECT requestUser, requestPath FROM drp WHERE responseCode = '200' AND requestUser IS NOT NULL " +
+      .sql("SELECT requestUser, requestPath, requestMethod FROM drp WHERE responseCode = '200' AND requestUser IS NOT NULL " +
         "AND requestUser NOT IN('-1','-2','-3')")
-      .map(row => row.getString(0) + "," + row.getString(1))
+      .map(row => row.getString(0) + "," + row.getString(1) + "," + row.getString(2))
       .saveAsTextFile(outFile, classOf[BZip2Codec])
 
     sc.stop()

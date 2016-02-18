@@ -15,6 +15,7 @@ object RetentionRate {
     val activeUsers = sc.textFile(activeUserFile)
         .map(Line.parseLine)
         .cache
+    val specialUsers = newUsers.subtract(activeUsers.map(row => (row._1, 1)))
     val usUsers = newUsers.join(activeUsers.filter(_._2.country == usCode))
       .join(newUsers)
     val nonUsUsers = newUsers.join(activeUsers.filter(_._2.country != usCode))
@@ -44,6 +45,15 @@ object RetentionRate {
         .map(line => (line._1, 1))
         .join(nonUsUsers)
       print(" | %.2f%%".format(retentionUsers.count * 100.0 / nonUsUsers.count))
+    }
+    print(" |\n")
+    print(specialUsers.count)
+    for (i <- 4 until args.length) {
+      val retentionUsers = sc.textFile(args(i))
+        .map(Line.parseLine)
+        .map(line => (line._1, 1))
+        .join(specialUsers)
+      print(" | %.2f%%".format(retentionUsers.count * 100.0 / specialUsers.count))
     }
     print(" |\n")
 
