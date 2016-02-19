@@ -1,7 +1,6 @@
 package com.ctofunds.dd
 
 import org.apache.hadoop.io.compress.BZip2Codec
-import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 
 object RawRequestPath {
@@ -11,14 +10,11 @@ object RawRequestPath {
     HadoopConfiguration.configure(args, sc.hadoopConfiguration)
     val logFile = args(2)
     val outFile = args(3)
-    val sqlContext = new SQLContext(sc)
-    val logs = sqlContext.read.json(logFile)
-    logs.registerTempTable("drp")
+    val logs = sc.textFile(logFile)
 
-    sqlContext
-      .sql("SELECT requestUser, requestPath, requestMethod FROM drp WHERE responseCode = '200' AND requestUser IS NOT NULL " +
-        "AND requestUser NOT IN('-1','-2','-3')")
-      .map(row => row.getString(0) + "," + row.getString(1) + "," + row.getString(2))
+    logs
+      .map(_.split("\""))
+      .map(row => (if (row.length > 49) row(51) else " ") + "," + row(23) + "," + row(19) + "," + row(31))
       .saveAsTextFile(outFile, classOf[BZip2Codec])
 
     sc.stop()

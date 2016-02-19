@@ -16,6 +16,7 @@ object UserBehavior {
       .count
     val rawResult = sc.textFile(requestPathFile)
       .map(line => (line.split(",")(0), 1))
+      .filter(_._1 != " ")
       .mapValues(_ => 1L)
       .reduceByKey(_ + _)
       .cache

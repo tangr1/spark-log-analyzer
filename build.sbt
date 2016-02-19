@@ -1,6 +1,6 @@
 name := "dd"
 
-version := "0.0.13"
+version := "0.0.15"
 
 scalaVersion := "2.10.6"
 

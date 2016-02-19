@@ -19,27 +19,27 @@ object RequestPath {
       .count
 
     val userFollowed = rawResult
-      .filter(_.matches("/rest/v2/users/follow/.*/POST"))
+      .filter(_.matches("/rest/v2/users/follow/[A-Za-z0-9_-]*/POST"))
       .count
 
     val userUnfollowed = rawResult
-      .filter(_.matches("/rest/v2/users/unfollow/.*/POST"))
+      .filter(_.matches("/rest/v2/users/unfollow/[A-Za-z0-9_-]*/POST"))
       .count
 
     val musicalReleased = rawResult
-      .filter(_.matches("/rest/v2/musicals/.*/uploaded/PUT"))
+      .filter(_.matches("/rest/v2/musicals/[A-Za-z0-9_-]*/uploaded/PUT"))
       .count
 
     val musicalDeleted = rawResult
-      .filter(_.matches("/rest/v2/musicals/.*/DELETE"))
+      .filter(_.matches("/rest/v2/musicals/[A-Za-z0-9_-]*/DELETE"))
       .count
 
     val musicalLiked = rawResult
-      .filter(_.matches("/rest/v2/musicals/.*/like/PUT"))
+      .filter(_.matches("/rest/v2/musicals/[A-Za-z0-9_-]*/like/PUT"))
       .count
 
     val musicalUnliked = rawResult
-      .filter(_.matches("/rest/v2/musicals/.*/like/DELETE"))
+      .filter(_.matches("/rest/v2/musicals/[A-Za-z0-9_-]*/like/DELETE"))
       .count
 
     val commentCreated = rawResult
@@ -47,15 +47,15 @@ object RequestPath {
       .count
 
     val commentDeleted = rawResult
-      .filter(_.matches("/rest/v2/comments/.*/DELETE"))
+      .filter(_.matches("/rest/v2/comments/[A-Za-z0-9_-]*/DELETE"))
       .count
 
     val commentLiked = rawResult
-      .filter(_.matches("/rest/v2/comments/.*/like/PUT"))
+      .filter(_.matches("/rest/v2/comments/[A-Za-z0-9_-]*/like/PUT"))
       .count
 
     val commentUnliked = rawResult
-      .filter(_.matches("/rest/v2/comments/.*/like/DELETE"))
+      .filter(_.matches("/rest/v2/comments/[A-Za-z0-9_-]*/like/DELETE"))
       .count
 
     println(s"$commentCreated | $commentDeleted | $commentLiked | $commentUnliked | $musicalDeleted | $musicalLiked |" +
