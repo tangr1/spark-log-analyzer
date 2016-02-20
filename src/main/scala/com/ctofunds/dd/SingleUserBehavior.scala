@@ -18,7 +18,7 @@ object SingleUserBehavior {
       .map(row => (DateTime.parse(row(15), formatter = DateTimeFormat.forPattern("dd/MMM/yyyy:HH:mm:ss Z")),
         row(23) + " | " + row(19) + " | " + row(31) + " | " + row(11).trim + " | " + row(39)))
       .sortByKey(ascending = true)
-      .map(row => row._1.toString("yyyy-MM-dd HH:mm:ss") + " | " + row._2)
+      .map(row => " | " + row._1.withZone(DateTimeZone.forOffsetHours(8)).toString("yyyy-MM-dd HH:mm:ss") + " | " + row._2)
       .collect
 
     println(result.mkString("\n"))
