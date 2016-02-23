@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import pygal
+from pygal.style import DefaultStyle
 
 start = False
 start_line = 0
 x = []
 rr = [[], [None], [None, None], [None, None, None], [None, None, None, None], [None, None, None, None, None],
-      [None, None, None, None, None, None]]
+     [None, None, None, None, None, None]]
+#rr = [[], [], [], [], [], [], []]
 ios = []
 android = []
 us = []
@@ -25,13 +27,20 @@ with open('/Users/tangrui/Documents/musically.md', 'r') as f:
             for i in range(3, len(fields)):
                 a = fields[i].strip().strip("*")
                 if len(a) > 0:
-                    rr[start_line - 4].append(float(a.split('%')[0]))
+                    rr[start_line - 4].append(float(a))
 
-chart = pygal.Line(x_label_rotation=15)
+customStyle = DefaultStyle
+customStyle.colors = ('#F44336', '#3F51B5', '#009688', '#FFC107', '#607D8B',
+                      '#9C27B0', '#03A9F4', '#8BC34A', '#FF9800', '#E91E63',
+                      '#2196F3', '#4CAF50', '#FFEB3B', '#673AB7', '#00BCD4',
+                      '#CDDC39', '#795548', '#9E9E9E', '#607D8B')
+
+chart = pygal.Line(x_label_rotation=15, style=customStyle)
 chart.title = u'日留存率'
 chart.x_labels = [u'2.4 周四', u'2.5 周五', u'2.6 周六', u'2.7 周日', u'2.8 周一', u'2.9 周二', u'2.10 周三', u'2.11 周四',
-                  u'2.12 周五', u'2.13 周六', u'2.14 周日', u'2.15 周一', u'2.16 周二', u'2.17 周三']
-chart.y_labels = ['10%', '20%', '30%', '40%', '50%']
+                  u'2.12 周五', u'2.13 周六', u'2.14 周日', u'2.15 周一', u'2.16 周二', u'2.17 周三', u'2.18周四',
+                  u'2.19周五', u'2.20周六']
+#chart.y_labels = ['16%', '20%', '24%', '28%', '32%', '36%', '40%', '44%', '48%']
 chart.add(u'2.3 周三', rr[0])
 chart.add(u'2.4 周四', rr[1])
 chart.add(u'2.5 周五', rr[2])
