@@ -1,4 +1,4 @@
-package com.ctofunds.dd
+package com.ctofunds.dd.musically
 
 import org.apache.hadoop.conf.Configuration
 

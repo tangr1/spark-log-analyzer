@@ -1,4 +1,4 @@
-package com.ctofunds.dd
+package com.ctofunds.dd.musically
 
 case class Line(country: Int, ios: Int, android: Int) {
 }

@@ -37,10 +37,10 @@ chart1.add(u'安卓', android)
 chart1.render_to_file('/Users/tangrui/Documents/dau1.svg')
 
 chart2 = pygal.Line(x_label_rotation=30, human_readable=True)
-chart2.title = u'日活数（美国，非美国）'
+chart2.title = u'日活数（区域a，区域b）'
 chart2.x_labels = x
 #chart2.y_labels = [u'200万', u'300万', u'400万', u'500万', u'600万', u'700万']
 chart2.add(u'日活总数', active)
-chart2.add(u'美国', us)
-chart2.add(u'非美国', nus)
+chart2.add(u'区域a', us)
+chart2.add(u'区域b', nus)
 chart2.render_to_file('/Users/tangrui/Documents/dau2.svg')

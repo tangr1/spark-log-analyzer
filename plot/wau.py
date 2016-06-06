@@ -41,6 +41,6 @@ chart.x_labels = x
 chart.add(u'周活总数', active)
 chart.add(u'苹果', ios)
 chart.add(u'安卓', android)
-chart.add(u'美国', us)
-chart.add(u'非美国', nus)
+chart.add(u'区域a', us)
+chart.add(u'区域b', nus)
 chart.render_to_file('/Users/tangrui/Documents/wau.svg')

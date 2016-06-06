@@ -1,4 +1,4 @@
-package com.ctofunds.dd
+package com.ctofunds.dd.zhiyu
 
 import org.apache.spark.{SparkConf, SparkContext}
 

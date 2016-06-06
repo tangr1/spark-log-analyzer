@@ -1,9 +1,9 @@
-package com.ctofunds.dd
+package com.ctofunds.dd.musically
 
 import org.apache.hadoop.io.compress.BZip2Codec
 import org.apache.spark.{SparkConf, SparkContext}
 
-object RawRequestPath {
+object NewRawActiveUser {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("musically-drp")
     val sc = new SparkContext(sparkConf)
@@ -14,7 +14,9 @@ object RawRequestPath {
 
     logs
       .map(_.split("\""))
-      .map(row => (if (row.length > 49) row(51) else " ") + "," + row(23) + "," + row(19) + "," + row(31))
+      .filter(row => row.length > 49 && row(31) == "200")
+      .map(row => (row(51),  row(11).trim + "," + row(39)))
+      .reduceByKey((x, y) => x)
       .saveAsTextFile(outFile, classOf[BZip2Codec])
 
     sc.stop()
