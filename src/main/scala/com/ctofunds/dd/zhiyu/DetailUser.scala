@@ -18,13 +18,15 @@ object DetailUser {
       val total = cached
         .map(_._1)
         .distinct
-        .count
+        .saveAsTextFile("./data/zhiyu/detail/" + args(i).split("/").last)
+        //.count
       val sa = cached
         .filter(_._2 == "102358")
         .map(_._1)
         .distinct
-        .count
-      println(Array(args(i).split("/").last, total, sa).mkString(","))
+        .saveAsTextFile("./data/zhiyu/detail_saudi/" + args(i).split("/").last)
+        //.count
+      //println(Array(args(i).split("/").last, total, sa).mkString(","))
     }
 
     sc.stop()

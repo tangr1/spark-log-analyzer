@@ -16,13 +16,15 @@ object ActiveUser {
       val total = cached
         .map(entry => entry._1)
         .distinct
-        .count
+        .saveAsTextFile("./data/zhiyu/active/" + args(i).split("/").last)
+        //.count
       val sa = cached
         .filter(_._2 == "102358")
         .map(entry => entry._1)
         .distinct
-        .count
-      println(Array(args(i).split("/").last, total, sa).mkString(","))
+        .saveAsTextFile("./data/zhiyu/active_saudi/" + args(i).split("/").last)
+        //.count
+      //println(Array(args(i).split("/").last, total, sa).mkString(","))
     }
 
     sc.stop()

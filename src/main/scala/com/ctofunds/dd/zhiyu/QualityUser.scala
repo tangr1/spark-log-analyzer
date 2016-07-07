@@ -43,9 +43,13 @@ object QualityUser {
         .reduceByKey(_ + _)
         .filter(_._2 > 10)
         .cache
+      /*
       println(Array(args(i).split("/").last,
         countUsers.join(timeUsers).count,
         saudiCountUsers.join(saudiTimeUsers).count).mkString(","))
+      */
+      countUsers.join(timeUsers).map(_._1).saveAsTextFile("/tmp/quality/" + args(i).split("/").last)
+      saudiCountUsers.join(saudiTimeUsers).map(_._1).saveAsTextFile("/tmp/quality_saudi/" + args(i).split("/").last)
     }
 
     sc.stop()

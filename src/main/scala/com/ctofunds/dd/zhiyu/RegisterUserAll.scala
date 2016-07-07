@@ -28,6 +28,10 @@ object RegisterUserAll {
     val map = sc.textFile(args(0))
       .map(_.split(","))
       .map(entry => (Reader.parse(entry(1)), 1))
+      .filter(_._1 == "United Kingdom")
+      .count
+    println(map)
+      /*
       .reduceByKey(_ + _)
       .collectAsMap()
     var sum = 0
@@ -44,6 +48,7 @@ object RegisterUserAll {
     println("Other," + (sum - top10))
     println(sum)
     println(top10)
+    */
 
     sc.stop()
   }
