@@ -6,7 +6,6 @@ object Test {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("nginx")
     val sc = new SparkContext(sparkConf)
-    sc.parallelize()
 
     def parseLine(line: String): (String, (Long, Double)) = {
       val PATTERN = """^\{\"name\": \"(.*)\", \"value\": (.*), \"timestamp\": (.*)\}$""".r
