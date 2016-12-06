@@ -1,0 +1,23 @@
+package com.ctofunds.dd.newsdog
+
+object DurationLine {
+  val PATTERN = """^\[2016-0\d-(\d{2}).*\{\"user_seq_id\": (\d+), \"duration": (\d+)""".r
+
+  def parseLine(log: String): String = {
+    val res = PATTERN.findFirstMatchIn(log)
+    if (res.isEmpty) {
+      throw new RuntimeException("Cannot parse line: " + log)
+    }
+    val m = res.get
+    Array(m.group(1).toInt, m.group(2), m.group(3)).mkString(",")
+  }
+
+  def parseLine2(log: String): (Int, Int) = {
+    val res = PATTERN.findFirstMatchIn(log)
+    if (res.isEmpty) {
+      throw new RuntimeException("Cannot parse line: " + log)
+    }
+    val m = res.get
+    (m.group(2).toInt, m.group(3).toInt)
+  }
+}
