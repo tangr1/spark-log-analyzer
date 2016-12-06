@@ -18,6 +18,6 @@ project/plugins/project/
 
 .idea
 
-data/*
-src/main/*
-project
+data/
+src/
+project/
