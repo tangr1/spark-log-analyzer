@@ -20,4 +20,6 @@ project/plugins/project/
 
 data/
 src/
+!plot/src/
 project/
+python/

@@ -9,9 +9,10 @@ scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation")
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.0" % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "1.4.0" % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-streaming" % "1.4.0" % "provided"
-libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.8.0" % "provided"
-libraryDependencies += "com.maxmind.geoip2" % "geoip2" % "2.6.0" % "provided"
-libraryDependencies += "org.uaparser" % "uap-scala_2.10" % "0.1.0" % "provided"
+libraryDependencies += "com.github.nscala-time" %% "nscala-time"% "2.8.0"
+libraryDependencies += "com.maxmind.geoip2" % "geoip2" % "2.6.0"
+libraryDependencies += "org.uaparser" % "uap-scala_2.10" % "0.1.0"
+libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.4"
 
 resolvers += "Akka Repository" at "http://repo.akka.io/releases/"
 
